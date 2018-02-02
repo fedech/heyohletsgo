@@ -61,16 +61,24 @@ classdef UserEquipment
 			switch Param.mobilityScenario
 				case 'pedestrian'
 					obj.Velocity = 1; % in m/s
-          obj = setTrajectory(obj, 1, Param);
+                    [x, y] = traffic_mobility(1, obj.Velocity, obj.Seed);
+                    obj = setTrajectory(obj, x, y, Param);
 				case 'vehicular'
 					obj.Velocity = 10; % in m/s
-          obj = setTrajectory(obj, 2, Param);
+                    [x, y] = traffic_mobility(2, obj.Velocity, obj.Seed);
+                    obj = setTrajectory(obj, x, y, Param);
 				case 'static'
 					obj.Velocity = 0; % in m/s
-          obj = setTrajectory(obj, 1, Param);
+                    [x, y] = traffic_mobility(1, obj.Velocity, obj.Seed);
+                    obj = setTrajectory(obj, x, y, Param);
 				case 'superman'
 					obj.Velocity = 100; % in m/s
-          obj = setTrajectory(obj, 1, Param);
+                    [x, y] = traffic_mobility(1, obj.Velocity, obj.Seed);
+                    obj = setTrajectory(obj, x, y, Param);
+                case 'straight'
+                    obj.Velocity = 10 / 12; % in m/s
+                    [x, y] = straight_mobility( obj.Velocity, obj.Seed, Param );
+                    obj = setTrajectory(obj, x, y, Param);
 				otherwise
 					sonohilog('Unknown mobility scenario selected','ERR');
 					return;
@@ -95,8 +103,7 @@ classdef UserEquipment
 		end
 
 		% sets user trajectory
-		function obj = setTrajectory(obj, scenarioCode, Param)
-			[x, y] = mobility(scenarioCode, obj.Velocity, obj.Seed);
+		function obj = setTrajectory(obj, x, y, Param)
 			obj.Trajectory(1:length(x),1) = x;
 			obj.Trajectory(1:length(y),2) = y;
 			obj.Position = [obj.Trajectory(1, 1) obj.Trajectory(1, 2) Param.ueHeight];

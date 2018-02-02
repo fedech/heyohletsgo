@@ -34,7 +34,7 @@ sonohi(Param.reset);
 w = warning('off', 'all');
 
 % Create Stations and Users
-[Stations, Param.AreaPlot] = createBaseStations(Param);
+[Stations, Param.AreaPlot, Param.clusters] = createBaseStations(Param);
 Users = createUsers(Param);
 
 % Create Channel scenario
